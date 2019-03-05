@@ -27,17 +27,32 @@ function updateHtml() {
   guessesText.textContent = "Guesses left: " + guessesLeft;
   winsText.textContent = "Wins: " + wins;
   lossesText.textContent = "Losses: " + losses;
-  userInputText.textContent = "Your guesses so far: " + userInput;
+  userInputText.innerHTML = "Your guesses so far: " + userInput.join(", ");
+}
+
+// Create an if statement for when a valid key (or already guessed key) is pressed: indexOf or includes
+function isValid(code, letter) {
+  if (code < 65 || code > 90 || userInput.includes(letter)) {
+    return false;
+  }
+  return true;
 }
 
 // This function is how the game begins with an event is triggered
 
 document.onkeyup = function(event) {
-  var userInput = event.key;
+  var characterCode = event.keyCode;
+  var letter = event.key;
+  if (!isValid(characterCode, letter)) {
+    return;
+  }
+  userInput.push(letter);
+  console.log(letter);
+  console.log(userInput);
   console.log(event);
 
   // This conditional will determine what happens in the game
-  if (userInput === computerGuess) {
+  if (letter === computerGuess) {
     wins++;
     resetGame();
   } else {
